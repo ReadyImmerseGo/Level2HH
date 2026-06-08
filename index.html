@@ -19,6 +19,8 @@
         content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no">
 
     <link rel="stylesheet" href="./static/css/viewer.css">
+    <link rel="stylesheet" href="./static/thirdpart/avatarprofile/css/coloris.min.css" />
+    <link rel="stylesheet" href="./static/thirdpart/avatarprofile/css/profile.css" />
 
     <link rel="manifest" id="manifest-json" href="./static/assets/manifest.json">
     <link rel="apple-touch-icon" sizes="192x192" href="./static/assets/icons/icon-192x192.png">
@@ -44,7 +46,7 @@
     <meta name="msapplication-TileColor" content="#000000">
 
     <link rel="icon" type="image/png" href="./static/assets/SPHERE-favicon.png">
-
+    
     <script src="./static/js/libs/basis/basis_transcoder.js"></script>
 </head>
 
@@ -78,22 +80,11 @@
         <div id="titlecontainer" class="titlecontent">
             <div id="title_text"></div>
         </div>
-
         <div id="https_warning">
             <img src="./static/assets/help/warning.png" id="https_warning_btn" class="pointer">
             <div id="warning-text">
-                <p id="https_warning_text_fr">
-                    La page n'est pas en HTTPS. Pour des raisons de sécurité, certaines fonctionnalités ont été bloquées
-                    par le navigateur. L'accéléromètre, ainsi que la VR, seront indisponibles. Contactez votre
-                    administrateur pour régler le problème.
-                <p id="https_warning_extra_fr">Il est normal d'être en HTTP lorsque vous utilisez le lien de
-                    prévisualisation mobile.</p>
-                </p>
-                <p id="https_warning_text_en">
-                    The page isn't using HTTPS. For security reasons, the web browser has blocked access to some
-                    features, such as the accelerometer, and VR. Please reach out to your system admin.
-                <p id="https_warning_extra_en">Using HTTP is normal in mobile preview mode.</p>
-                </p>
+                <p data-i18n-text="https_warning_text" class="https_warning"></p>
+                <p data-i18n-text="https_warning_extra" class="https_warning"></p>
             </div>
         </div>
 
@@ -124,10 +115,9 @@
             </div>
         </div>
 
-        <div id="alertwebgl">Your browser does not use WebGL technology. <br />Please check if an update is available.
-            <br /><br />Votre navigateur ne profite pas de la technologie WebGL.<br />Veuillez vérifier si une mise à
-            jour est disponible.
-            <br /><br /><a href="http://caniuse.com/#feat=webgl">Is WebGL compatible with my browser?</a>
+        <div id="alertwebgl">
+            <p data-i18n-text="webgl_alert"></p>
+            <br /><br /><a data-i18n-text="webgl_test_link" href="http://caniuse.com/#feat=webgl"></a>
         </div>
 
         <div id="help">
@@ -178,9 +168,16 @@
         <img src="./static/assets/viewer/fullscreen.png" id="fullscreenimg">
     </div>
 
+    <div id="load_background"></div>
+        <div id="load_bar">
+            <div id='load_bar_background' ></div>
+            <div id="load_bar_mask" ></div>
+        </div>
+    </div>
+
     <div id="load_explain">
-        <span id="load_label"></span>
-        <span id="load_progress">0</span><span id="load_separator"> /&nbsp;</span><span id="load_total">0</span>
+        <div id="load_label"></div>
+        <div id="load_detail"></div>
     </div>
 
     <div id="close">
@@ -219,35 +216,35 @@
 
     <div id="onDefocusDiv" class="onDefocusDiv"></div>
 
-    <button id="openMenuButton" style="display: none" class="position-absolute hide-interface">
+    <button id="openMenuButton" data-i18n-title="open_menu_tooltip" style="display: none" class="position-absolute hide-interface">
         <img id="openMenuButtonImage" src="./static/assets/menu/icon_menu_rest.png" alt="">
     </button>
-    <button id="openUsersPanelButton" title="Voir les utilisateurs connectés" style="display: none" class="position-absolute hide-interface overlay-shadow">
+    <button id="openUsersPanelButton" data-i18n-title="open_users_panel_tooltip" style="display: none"
+        class="position-absolute hide-interface overlay-shadow">
         <img id="openUsersPanelImage" src="./static/assets/menu/icon_users_panel.png" alt="">
     </button>
     <div id="audioControls" style="display: none" class="hide-interface overlay-shadow">
         <div id="microControl" class="audioControl">
-            <div id="microControlButton" class="audioControlButton" title="Couper le micro">
+            <div id="microControlButton" class="audioControlButton" data-i18n-title="mute_tooltip">
                 <img id="microControlImg" class="micIcon microOn" src="./static/assets/menu/icon_voiceOn.png"
-                alt="Couper/rétablir le micro">
+                    alt="Couper/rétablir le micro">
                 <span id="microPulse" class="pulse noAnimation"></span>
             </div>
         </div>
         <div id="soundControl" class="audioControl">
-            <button id="soundControlButton" class="audioControlButton" title="Couper le son">
-                <img class="soundIcon soundOn" src="./static/assets/menu/icon_soundOn.png"
-                    alt="Couper/rétablir le son">
+            <button id="soundControlButton" class="audioControlButton" data-i18n-title="deafen_tooltip">
+                <img class="soundIcon soundOn" src="./static/assets/menu/icon_soundOn.png" alt="Couper/rétablir le son">
             </button>
         </div>
     </div>
-    <button id="raiseHandButton" title="Lever la main" style="display: none" class="position-absolute hide-interface overlay-shadow">
-        <img class="handIcon raiseHand" src="./static/assets/menu/icon_raiseHand.png"
-            alt="Lever/baisser la main">
+    <button id="raiseHandButton" data-i18n-title="raise_hand_tooltip" style="display: none"
+        class="position-absolute hide-interface overlay-shadow">
+        <img class="handIcon raiseHand" src="./static/assets/menu/icon_raiseHand.png" alt="Lever/baisser la main">
     </button>
     <div id="usersListContainer" class="hide-interface overlay-shadow">
         <div class="usersListTitle">
             <img src="./static/assets/menu/icon_user.png" alt="">
-            <h5>Utilisateurs connectés <span id="usersCount"></span></h5>
+            <h5><span id="usersPanelName" data-i18n-text="users_panel_name"></span> <span id="usersCount"></span></h5>
         </div>
         <button id="closeUsersPanelButton" class="closeButton">
             <img class="closeButtonImage icon" src="./static/assets/chat/icon_close.png" alt="Close">
@@ -259,22 +256,32 @@
             <button id="closeReportButton" class="closeButton">
                 <img class="closeButtonImage icon" src="./static/assets/chat/icon_close.png" alt="Close">
             </button>
-            <h1 class='textTitle red menuTitle'>Signalement</h1>
+            <h1 class='textTitle red menuTitle' data-i18n-text="report_popup_title"></h1>
             <div class="reportContent">
-                <p>Vous souhaitez signaler <span id="userName"></span></p>
+                <p><span data-i18n-text="report_popup_text"></span> <span id="userName"></span></p>
                 <p>
-                    <label>Sélectionner un motif : </label>
+                    <label data-i18n-text="report_popup_select_reason"></label>
                     <select id="reportReason">
-                        <option name="InappropriateMessage" value="0">Message(s) inapproprié(s)</option>
-                        <option name="OffensiveLanguage" value="1">Langage offensant</option>
-                        <option name="AnormalBehaviour" value="2">Comportement anormal</option>
-                        <option name="Other" value="3">Autre</option>
+                        <option name="InappropriateMessage" value="0" data-i18n-text="report_popup_select_reason_option_0"></option>
+                        <option name="OffensiveLanguage" value="1" data-i18n-text="report_popup_select_reason_option_1"></option>
+                        <option name="AnormalBehaviour" value="2" data-i18n-text="report_popup_select_reason_option_2"></option>
+                        <option name="Other" value="3" data-i18n-text="report_popup_select_reason_option_3"></option>
                     </select>
                 </p>
-                <textarea  id="reportDetails" type="text" placeholder="Pouvez-vous nous fournir quelques détails ?" maxlength="300"></textarea>
+                <textarea id="reportDetails" type="text" data-i18n-placeholder="report_popup_textarea_placeholder" maxlength="300"></textarea>
             </div>
-            <button id="sendReport" class="button secondaryButton">Signaler l'utilisateur</button>
-
+            <button id="sendReport" class="button secondaryButton" data-i18n-text="report_popup_send_report"></button>
+        </div>
+    </div>
+    <div id="renamePopupContainer" class="position-absolute menuPopin overlay-shadow" tabindex="-1">
+        <div id="renamePopup" class="menuContainer">
+            <h1 data-i18n-text="rename_popup_title" class='textTitle red menuTitle'></h1>
+            <p data-i18n-text="rename_popup_text" class="renamePopupText"></p>
+            <div class="renameContent">
+                <input id="renameInputFirstname" data-i18n-placeholder="rename_popup_input_firstname" type="text" maxlength="20">
+                <input id="renameInputLastname" data-i18n-placeholder="rename_popup_input_lastname" type="text" maxlength="20">
+            </div>
+            <button id="sendRename" class="button secondaryButton" data-i18n-text="rename_popup_confirm"></button>
         </div>
     </div>
     <div id="menuPopin" class="position-absolute menuPopin" tabindex="-1">
@@ -282,34 +289,34 @@
             <button id="closeButton" class="closeButton">
                 <img class="closeButtonImage icon" src="./static/assets/chat/icon_close.png" alt="Close">
             </button>
-            <h1 class='textTitle red menuTitle'>Menu</h1>
-            <button id="profileButton" class="button primaryButton">Mon profil</button>
-            <button id="accountButton" class="button primaryButton">Mon compte</button>
-            <button id="tutorialButton" class="button primaryButton">Tutoriel</button>
-            <button id="leaveButton" class="button secondaryButton">Quitter</button>
+            <h1 data-i18n-text="menu_popup_title" class='textTitle red menuTitle'></h1>
+            <button id="accountButton" class="button primaryButton" data-i18n-text="menu_popup_account"></button>
+            <button id="leaveButton" class="button secondaryButton" data-i18n-text="menu_popup_leave"></button>
         </div>
     </div>
 
-    <div id="alertPopup" hidden class="position-absolute overlay-shadow" style="background-color:white; padding: 15px; border-radius: 12px; text-align: left;">
-            <span style="display: flex; flex-direction: row; justify-content: flex-start;">
-                <img id="alertIconPositive" class="alertIcon" src="./static/assets/alert/picto_event.png">
-                <img id="alertIconNegative" class="alertIcon" src="./static/assets/alert/picto_alerte.png">
-                <h5 id="alertTitle" class="textTitle"></h5>
-            </span>
-            <p id="alertText" class="textBody" style="color: black;"></p>
+    <div id="alertPopup" hidden class="position-absolute overlay-shadow"
+        style="background-color:white; padding: 15px; border-radius: 12px; text-align: left;">
+        <span style="display: flex; flex-direction: row; justify-content: flex-start;">
+            <img id="alertIconPositive" class="alertIcon" src="./static/assets/alert/picto_event.png">
+            <img id="alertIconNegative" class="alertIcon" src="./static/assets/alert/picto_alerte.png">
+            <h5 id="alertTitle" class="textTitle"></h5>
+        </span>
+        <p id="alertText" class="textBody" style="color: black;"></p>
     </div>
     <div class="position-absolute chatContainer">
         <div id="chat" class="chat hide-interface overlay-shadow">
             <button id="closeChat" class="closeChatButton">
-                <h5 class="textTitle" style="margin: 0;">Chat</h5>
+                <h5 class="textTitle" data-i18n-text="chat_popup_title"></h5>
                 <div id="closeChat">
                     <img class="chatCloseIcon" alt="">
                 </div>
             </button>
             <div id="chatMessages" class="chatMessages">
             </div>
-            <div style="display: flex; flex-wrap: nowrap; justify-content: flex-end;">
-                <input id="chatInput" class="chatInput" placeholder="Envoyer un message..." type="text" maxlength="150" autocomplete="off">
+            <div style="display: flex; flex-wrap: nowrap; justify-content: flex-end; position: relative;">
+                <div id="userMentionList" class="userMentionList overlay-shadow"></div>
+                <div id="chatInput" class="chatInput" data-i18n-placeholder="chat_popup_input_placeholder" contenteditable="true" maxlength="150"></div>
                 <div id="sendChat" class="sendChatButton">
                     <img class="sendChatIcon" src="./static/assets/chat/icon_send.png" alt="">
                 </div>
@@ -325,7 +332,8 @@
             <img src="./static/assets/chat/icon_bulle.png" class="chatOpenIcon" alt="">
         </div>
     </div>
-    <script type="text/javascript" src="./static/js/main-viewer.js"></script>
+    <div id="thirdpart"></div>
+    <script type="module" src="./static/js/main-viewer.js"></script>
     <script type="text/javascript" src="./api/api-wrapper.js"></script>
 </body>
 
